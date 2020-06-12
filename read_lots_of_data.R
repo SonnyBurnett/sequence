@@ -13,4 +13,3 @@ football <- read.csv(file="football.csv")
 spotify <- read.csv(file="spotify.csv")
 wine <- read.csv(file="wine.csv")
 
-#btot <- rbind(b1,b2,b3,b4,b5,b6,b7,b8,b9)
