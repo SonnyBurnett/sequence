@@ -17,7 +17,7 @@ j9 <- benchmark(wn <- toJSON(wine), replications = 1)
 
 js <- rbind(j1,j2,j3,j4,j5,j6,j7,j8,j9)
 js <- js[,c(1,3)]
-names(js)[2] <- "Time_JSON"
+names(js)[2] <- "wJSON"
 dataset <- c("blackjack", "covid", "fake", "fifa", 
              "football", "movies", "spotify", "true", "wine")
 json_size <- c(object.size(bj), 
@@ -29,5 +29,11 @@ json_size <- c(object.size(bj),
                object.size(sf), 
                object.size(tr), 
                object.size(wn))
-json_info <- rbind(dataset,js,json_size)
-json_info
+json_info <- cbind(dataset, js[2], json_size)
+json_info <- transform(json_info, json_sizekb = round(json_size/1024, digits = 2))
+json_info <- transform(json_info, json_sizemb = round(json_sizekb/1024, digits = 2))
+json_info <- transform(json_info, json_wspeed = round(json_sizemb/wJSON, digits = 2))
+
+
+# Clean up
+rm(j1,j2,j3,j4,j5,j6,j7,j8,j9,dataset, js, json_size)

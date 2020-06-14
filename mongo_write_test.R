@@ -10,55 +10,62 @@
 # Prepare each Mongo database by opening and deleting it
 # To start completely fresh!
 
+reps = 1
+
+mcon <- mongo(collection="blackjack",db="kaggle",url="mongodb://localhost")
+mcon$remove('{}')
+m1 <- benchmark(mcon$insert(blackjack),replications = reps)
+mcon$disconnect()
+
 mcon <- mongo(collection="covid",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m2 <- benchmark(mcon$insert(covid),replications = 10)
+m2 <- benchmark(mcon$insert(covid),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="fake",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m3 <- benchmark(mcon$insert(fake),replications = 10)
+m3 <- benchmark(mcon$insert(fake),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="fifa",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m4 <- benchmark(mcon$insert(fifa),replications = 10)
+m4 <- benchmark(mcon$insert(fifa),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="football",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m5 <- benchmark(mcon$insert(football),replications = 10)
+m5 <- benchmark(mcon$insert(football),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="movies",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m6 <- benchmark(mcon$insert(movies),replications = 10)
+m6 <- benchmark(mcon$insert(movies),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="spotify",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m7 <- benchmark(mcon$insert(spotify),replications = 10)
+m7 <- benchmark(mcon$insert(spotify),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="true",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m8 <- benchmark(mcon$insert(true),replications = 10)
+m8 <- benchmark(mcon$insert(true),replications = reps)
 mcon$disconnect()
 
 mcon <- mongo(collection="wine",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
-m9 <- benchmark(mcon$insert(wine),replications = 10)
+m9 <- benchmark(mcon$insert(wine),replications = reps)
 mcon$disconnect()
 
 # Collect the benchmark data of MongoDB
 
 btotmongo <- rbind(m1,m2,m3,m4,m5,m6,m7,m8,m9)
 btotmongo <- btotmongo[,c(1,3)]
-names(btotmongo)[2] <- "mwtime10"
-btotmongo <- transform(btotmongo, mwtime =  mwtime10 / 10)
-btotmongo <- cbind(btotmongo,dataset, df_rows, df_cols, df_size, json_size)
-btotmongo <- transform(btotmongo, mwspeedbt = df_size/mwtime)
-btotmongo <- transform(btotmongo, sizekb = df_size/1024)
-btotmongo <- transform(btotmongo, sizemb = sizekb/1024)
-btotmongo <- transform(btotmongo, mwspeedmb = sizemb/mwtime)
-btotmongo
+names(btotmongo)[2] <- "mwtimereps"
+btotmongo <- cbind(btotmongo[2],df_info)
+btotmongo <- transform(btotmongo, mwtime =  mwtimereps / reps)
+btotmongo <- transform(btotmongo, mwspeedbt = round(df_size/mwtime, digits = 2))
+btotmongo <- transform(btotmongo, mwspeedmb = round(df_sizemb/mwtime, digits = 2))
+
+# clean up
+rm(m1,m2,m3,m4,m5,m6,m7,m8,m9, mcon)

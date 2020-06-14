@@ -15,17 +15,19 @@ redisClose()
 redisConnect()
 redisFlushAll()
 
+reps = 1
+
 # Benchmark writing the dataframes 10 times to Redis
 
-b1 <- benchmark(redisSet('blackjack', bj),replications = 10)
-b2 <- benchmark(redisSet('covid', cv), replications = 10)
-b3 <- benchmark(redisSet('fake', fk), replications = 10)
-b4 <- benchmark(redisSet('fifa', ff), replications = 10)
-b5 <- benchmark(redisSet('football', fb), replications = 10)
-b6 <- benchmark(redisSet('movies', mv), replications = 10)
-b7 <- benchmark(redisSet('spotify', sf), replications = 10)
-b8 <- benchmark(redisSet('true', tr), replications = 10)
-b9 <- benchmark(redisSet('wine', wn), replications = 10)
+b1 <- benchmark(redisSet('blackjack', bj),replications = reps)
+b2 <- benchmark(redisSet('covid', cv), replications = reps)
+b3 <- benchmark(redisSet('fake', fk), replications = reps)
+b4 <- benchmark(redisSet('fifa', ff), replications = reps)
+b5 <- benchmark(redisSet('football', fb), replications = reps)
+b6 <- benchmark(redisSet('movies', mv), replications = reps)
+b7 <- benchmark(redisSet('spotify', sf), replications = reps)
+b8 <- benchmark(redisSet('true', tr), replications = reps)
+b9 <- benchmark(redisSet('wine', wn), replications = reps)
 
 
 # bringing it all together.
@@ -33,15 +35,18 @@ b9 <- benchmark(redisSet('wine', wn), replications = 10)
 
 ballr <- rbind(b1,b2,b3,b4,b5,b6,b7,b8,b9)
 ballr <- ballr[,c(1,3)]
-names(ballr)[2] <- "rwtime10"
+names(ballr)[2] <- "rwtimereps"
 btotredis <- cbind(ballr, df_info, json_info)
 
-btotredis <- transform(btotredis, rwtime =  rwtime10 / 10)
-btotredis <- transform(btotredis, rwspeedbt = json_size/rwtime)
-btotredis <- transform(btotredis, rwspeedmb = sizemb/rwtime)
-btotredis
+btotredis <- transform(btotredis, rwtime =  rwtimereps / reps)
+btotredis <- transform(btotredis, rwspeedbt = round(json_size/rwtime, digits = 2))
+btotredis <- transform(btotredis, rwspeedmb = round(json_sizemb/rwtime, digits = 2))
 
 
 # Close the connection to the Redis database
 
-redisClose()
+#redisClose()
+
+# Clean up
+
+rm(b1,b2,b3,b4,b5,b6,b7,b8,b9,ballr)
