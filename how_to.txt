@@ -1,0 +1,19 @@
+How to store a (complex) dataframe in Redis from R
+https://stackoverflow.com/questions/15219858/how-to-store-a-complex-object-in-redis-using-redis-py 
+
+How to install Redis on Windows:
+https://stackoverflow.com/questions/6476945/how-do-i-run-redis-on-windows
+
+How to install Redis on Mac OS:
+https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298 
+
+How to work with Redis:
+https://redis.io/documentation 
+
+How to do Machine Learning with Redis:
+https://redislabs.com/blog/introduction-redis-ml/ 
+
+How to do Machine Learning with MongoDB:
+https://www.mongodb.com/blog/post/training-machine-learning-models-with-mongodb 
+
+
