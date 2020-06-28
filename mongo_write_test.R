@@ -10,7 +10,12 @@
 # Prepare each Mongo database by opening and deleting it
 # To start completely fresh!
 
+reps = 1
 
+mcon <- mongo(collection="blackjack",db="kaggle",url="mongodb://localhost")
+mcon$remove('{}')
+m1 <- benchmark(mcon$insert(blackjack),replications = reps)
+mcon$disconnect()
 
 mcon <- mongo(collection="covid",db="kaggle",url="mongodb://localhost")
 mcon$remove('{}')
