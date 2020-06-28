@@ -11,5 +11,7 @@ library(mongolite)
 # Maak een connectie met de Mongo DB
 # En haal de data op
 mcon <- mongo(collection="movies2",db="kaggle",url="mongodb://localhost")
-movies2 <- mcon$find('{}')
+movies2 <- mcon$find('{ "Year" : 2010 }')
 dim(movies2)
+
+colnames(movies)
