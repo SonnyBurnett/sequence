@@ -43,3 +43,4 @@ dataset_list = ["blackjack", "covid", "fake", "fifa",
 for d in dataset_list:
     print("write", d, write_redis_dataset(d, redis_con), "seconds")
     print("read ", d, read_redis_dataset(d, redis_con), " seconds")
+    print_dataframe(d)

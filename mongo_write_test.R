@@ -3,7 +3,7 @@
 # input:  9 dataframes
 #         df_info     - general info on dataframes
 #
-# output: dataframes stored in redis database
+# output: dataframes stored in Mongo database
 #         btotmongo   - benchmark information 
 #
 
