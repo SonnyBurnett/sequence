@@ -16,21 +16,20 @@ def get_next_minus(input_list):
 
 
 def get_next_pattern(input_list, action):
-    return_list = input_list
     if action == "m":
-        return_list.append(get_next_minus(return_list[-1]))
+        return get_next_minus(input_list)
     else:
-        return_list.append(get_next_divisor(return_list[-1]))
-    return return_list
+        return get_next_divisor(input_list)
 
 
 def get_all_patterns(start_list, patt_list):
-    return_list = start_list
+    return_lists = []
+    return_lists.append(start_list)
     for c in patt_list:
-        get_next_pattern(start_list, c)
-        if len(return_list[-1]) < 3 or check_equal_values_list(return_list[-1]):
+        return_lists.append(get_next_pattern(return_lists[-1], c))
+        if len(return_lists[-1]) < 3 or check_equal_values_list(return_lists[-1]):
             break
-    return return_list
+    return return_lists
 
 
 def check_equal_values_list(input_list):
@@ -66,13 +65,13 @@ def make_pattern_list():
 
 
 def add_first_number(input_list):
-    if len(input_list[-1]) == 2:
-        if abs(input_list[-1][0]) == abs(input_list[-1][1]):
-            return input_list[-1][0]
+    if len(input_list) == 2:
+        if abs(input_list[0]) == abs(input_list[1]):
+            return input_list[0]
         else:
-            return input_list[-1][1] - (input_list[-1][0] - input_list[-1][1])
+            return input_list[1] - (input_list[0] - input_list[1])
     else:
-        return input_list[-1][1]
+        return input_list[1]
 
 
 def append_number(a, b, operation):
@@ -102,10 +101,11 @@ def main():
     for p in pattern_list:
         a = get_all_patterns(user_list, p)
         if is_good_pattern(a):
-            c = add_first_number(a)
-            d = add_rest_of_numbers(c)
+            c = add_first_number(a[-1])
+            a[-1].append(c)
+            d = add_rest_of_numbers(a, p)
             e = get_solution(d)
-            print(e)
+            print("solution:", e)
             solution_found = True
             break
     if not solution_found:
