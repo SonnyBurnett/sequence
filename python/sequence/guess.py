@@ -100,8 +100,7 @@ def get_solution(input_list):
     return int(input_list[0][-1])
 
 
-def main():
-    user_list = get_user_numbers()
+def find_solution(user_list):
     pattern_list = make_pattern_list()
     solution_found = False
     for p in pattern_list:
@@ -112,6 +111,15 @@ def main():
             break
     if not solution_found:
         print("Sorry I do not know the answer!")
+
+
+def main():
+    while True:
+        user_list = get_user_numbers()
+        if len(user_list) < 1:
+            break
+        else:
+            find_solution(user_list)
 
 
 if __name__ == '__main__':
