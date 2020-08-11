@@ -120,6 +120,7 @@ def main():
             break
         else:
             find_solution(user_list)
+        print()
 
 
 if __name__ == '__main__':
