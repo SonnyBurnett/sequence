@@ -4,6 +4,9 @@
 # (c) Taco Bakker
 #
 
+from itertools import permutations
+
+
 def get_next_divisor(input_list):
     return [input_list[t + 1] / input_list[t] for t in range(0, len(input_list)-1) if input_list[t] != 0]
 
@@ -42,7 +45,7 @@ def len_two_checker(input_list):
     return False
 
 
-def find_pattern(input_list):
+def is_good_pattern(input_list):
     if True in [check_equal_values_list(x) for x in input_list]:
         return True
     return len_two_checker(input_list)
@@ -72,19 +75,42 @@ def add_first_number(input_list):
         return input_list[-1][1]
 
 
-def add_rest_of_numbers(input_list):
-    return []
+def append_number(a, b, operation):
+    if operation == "m":
+        return a + b
+    else:
+        return a * b
+
+
+def add_rest_of_numbers(input_list, pattern):
+    output_list = input_list
+    t = len(output_list) - 2
+    while t >= 0:
+        output_list[t].append(append_number(output_list[t+1][-1], output_list[t][-1], pattern[t]))
+        t = t - 1
+    return output_list
 
 
 def get_solution(input_list):
-    return 0
+    return int(input_list[0][-1])
 
 
-def hoofd():
+def main():
     user_list = get_user_numbers()
     pattern_list = make_pattern_list()
+    solution_found = False
     for p in pattern_list:
-        x = find_pattern(get_all_patterns(user_list, p))
-        add_first_number(x)
+        a = get_all_patterns(user_list, p)
+        if is_good_pattern(a):
+            c = add_first_number(a)
+            d = add_rest_of_numbers(c)
+            e = get_solution(d)
+            print(e)
+            solution_found = True
+            break
+    if not solution_found:
+        print("Sorry I do not know the answer!")
 
 
+if __name__ == '__main__':
+    main()
