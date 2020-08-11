@@ -22,7 +22,7 @@ def get_next_pattern(input_list, action):
         return get_next_divisor(input_list)
 
 
-def get_all_patterns(start_list, patt_list):
+def calculate_pattern_lists(start_list, patt_list):
     return_lists = []
     return_lists.append(start_list)
     for c in patt_list:
@@ -64,7 +64,7 @@ def make_pattern_list():
     return ["mmm", "mmd", "mdm", "mdd", "dmm", "dmd", "ddm", "ddd"]
 
 
-def add_first_number(input_list):
+def calculate_first_number(input_list):
     if len(input_list) == 2:
         if abs(input_list[0]) == abs(input_list[1]):
             return input_list[0]
@@ -72,6 +72,12 @@ def add_first_number(input_list):
             return input_list[1] - (input_list[0] - input_list[1])
     else:
         return input_list[1]
+
+
+def add_first_number(input_lists):
+    output_lists = input_lists
+    output_lists[-1].append(calculate_first_number(output_lists[-1]))
+    return output_lists
 
 
 def append_number(a, b, operation):
@@ -99,13 +105,9 @@ def main():
     pattern_list = make_pattern_list()
     solution_found = False
     for p in pattern_list:
-        a = get_all_patterns(user_list, p)
+        a = calculate_pattern_lists(user_list, p)
         if is_good_pattern(a):
-            c = add_first_number(a[-1])
-            a[-1].append(c)
-            d = add_rest_of_numbers(a, p)
-            e = get_solution(d)
-            print("solution:", e)
+            print("solution:", get_solution(add_rest_of_numbers(add_first_number(a), p)))
             solution_found = True
             break
     if not solution_found:
